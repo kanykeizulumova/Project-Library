@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Project: Library </title>
+    <link rel="stylesheet" href="css-style.css">
+  </head>
+
+  <body>
+    <h1>My library</h1>
+    <div id="book-container"> 
+      
+    </div>
+    <button id="showDialogBtn">Add new book</button>
+    <dialog id="favDialog">
+  <form method="dialog">
+    <section>
+      <p>
+        <label for="favBook">Book`s name:</label>
+        <input id = title type="text" name="title" required></input>
+      </p>
+    </section>
+    <section>
+      <p>
+        <label for="favAuthor">Author`s name:</label>
+        <input id = author type="text" name="author" required></input>
+      </p>
+    </section>
+    <section>
+      <p>
+        <label for="pageNumber">Number of pages:</label>
+        <input id = pages type="text" name="pages" required></input>
+      </p>
+    </section>
+    <section>
+      <p>
+        <label for="read">Have you read the book?</label>
+        <select id="bookRead">
+          <option></option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </p>
+    </section>
+    <menu>
+      <button id="cancel" type="reset">Cancel</button>
+      <button type="submit">Confirm</button>
+    </menu>
+  </form>
+</dialog>
+
+    <script src="java-scrypt.js"></script>
+  </body>
+</html>
