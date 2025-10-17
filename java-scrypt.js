@@ -40,6 +40,15 @@ function displayBooks() {
     let divRead = document.createElement("div");
     divRead.textContent = Book.read;
     let btnRemove = document.createElement("button");
+    btnRemove.textContent = "Remove";
+    divCard.appendChild(btnRemove);
+    btnRemove.setAttribute("data-uuid", Book.uuid);
+    btnRemove.addEventListener("click", function (event) {
+      const uuid = event.target.getAttribute("data-uuid");
+      const indexToRemove = myLibrary.findIndex((book) => book.uuid === uuid);
+      myLibrary.splice(indexToRemove, 1);
+      displayBooks();
+    });
 
     divCard.appendChild(divTitle);
     divCard.appendChild(divAuthor);
@@ -50,24 +59,32 @@ function displayBooks() {
 }
 
 displayBooks();
+
 const updateButton = document.getElementById("showDialogBtn");
 updateButton.addEventListener("click", function () {
   favDialog.showModal();
+});
+const cancelButton = document.getElementById("cancel");
+cancelButton.addEventListener("click", function () {
+  favDialog.close();
 });
 
 const form = document.querySelector("form");
 form.addEventListener("submit", function (event) {
   event.preventDefault();
-  const inputTitle = document.getElementById("title").value;
-  const inputAuthor = document.getElementById("author").value;
-  const inputPages = document.getElementById("pages").value;
-  const inputRead =
-    document.getElementById("bookRead").value === "Yes" ? true : false;
+  const titleElement = document.getElementById("title");
+  const authorElement = document.getElementById("author");
+  const pagesElement = document.getElementById("pages");
+  const readElement = document.getElementById("bookRead");
+  const inputRead = readElement.value === "Yes" ? true : false;
+  const inputTitle = titleElement.value;
+  const inputAuthor = authorElement.value;
+  const inputPages = pagesElement.value;
   addBookToLibrary(inputTitle, inputAuthor, inputPages, inputRead);
+  titleElement.value = "";
+  authorElement.value = "";
+  pagesElement.value = "";
+  readElement.value = "";
   displayBooks();
-  inputAuthor.value = "";
-  inputTitle.value = "";
-  inputPages.value = "";
-  inputRead.value = "";
   favDialog.close();
 });
