@@ -25,20 +25,45 @@ addBookToLibrary("Harper Lee", "To Kill a Mockingbird", 281, true);
 addBookToLibrary("Jane Austen", "Pride and Prejudice", 279, false);
 addBookToLibrary("Game of Thrones", "George R.R. Martin", 694, true);
 console.log(myLibrary);
+Book.prototype.toggleReadStatus = function () {
+  this.read = !this.read;
+};
 
 function displayBooks() {
   const divContainer = document.getElementById("book-container");
   divContainer.innerHTML = "";
   myLibrary.forEach((Book) => {
     let divCard = document.createElement("div");
+    divCard.className = "book-card";
+    let header = document.createElement("h3");
+    header.textContent = "Book Info";
+    divCard.appendChild(header);
     let divTitle = document.createElement("div");
-    divTitle.textContent = Book.title;
+    divTitle.textContent = `Book's name:  ${Book.title}`;
     let divAuthor = document.createElement("div");
-    divAuthor.textContent = Book.author;
+    divAuthor.textContent = `Author: ${Book.author}`;
     let divPages = document.createElement("div");
-    divPages.textContent = Book.pages;
-    let divRead = document.createElement("div");
-    divRead.textContent = Book.read;
+    divPages.textContent = `Number of Pages: ${Book.pages}`;
+    let divRead = document.createElement("button");
+    divRead.className = "read-status-btn";
+    divRead.textContent = Book.read
+      ? "Read status: Read"
+      : "Read status: Not Read";
+    divRead.style.backgroundColor = Book.read ? "#65f123ff" : "#91180bff";
+    divRead.addEventListener("click", function () {
+      Book.toggleReadStatus();
+      if (Book.read === true) {
+        divRead.textContent = `Read status: Read`;
+        divRead.style.backgroundColor = "#65f123ff";
+      } else {
+        divRead.textContent = `Read status: Not Read`;
+        divRead.style.backgroundColor = "#91180bff";
+      }
+    });
+    divCard.appendChild(divTitle);
+    divCard.appendChild(divAuthor);
+    divCard.appendChild(divPages);
+    divCard.appendChild(divRead);
     let btnRemove = document.createElement("button");
     btnRemove.textContent = "Remove";
     divCard.appendChild(btnRemove);
@@ -50,10 +75,6 @@ function displayBooks() {
       displayBooks();
     });
 
-    divCard.appendChild(divTitle);
-    divCard.appendChild(divAuthor);
-    divCard.appendChild(divPages);
-    divCard.appendChild(divRead);
     divContainer.appendChild(divCard);
   });
 }

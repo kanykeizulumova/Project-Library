@@ -1,6 +1,4 @@
-body{
-    display: flex;
-}
+
 
 h1 {
     margin-bottom: 10px;
@@ -9,23 +7,37 @@ h1 {
     text-align: justify;
 }
 
-#container {
+#book-container {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 130vh;;
+}
+
+.book-card {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    flex-flow: column;
+    align-items: left;
     border: 1px solid black;
-    width: 450px;
-    height: 500px;  
-    justify-content: space-around;
+    width: 20%;
+    height: 20%;  
     border-radius: 8px;
     background-color: #f0f0f0;
+    margin: 10px;
+    padding: 10px;
+    line-height: 1.5;
 }
 
 button {
-    width: 30% ;
+    width: 10vh; ;
     height: 10%; ;
     margin: 10px;
     border-radius: 8px;
+}
+.read-status-btn {
+    color: black;
+    border: none;
+    cursor: pointer;
 }
 
 input {
