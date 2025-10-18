@@ -19,11 +19,12 @@ addBookToLibrary(
   true
 );
 addBookToLibrary("J.R.R. Tolkien", "The Hobbit", 310, false);
-addBookToLibrary("George Orwell", "1984", 328, true);
-addBookToLibrary("F. Scott Fitzgerald", "The Great Gatsby", 180, false);
+addBookToLibrary("George Orwell", "1984", 328, false);
+addBookToLibrary("F. Scott Fitzgerald", "The Great Gatsby", 180, true);
 addBookToLibrary("Harper Lee", "To Kill a Mockingbird", 281, true);
-addBookToLibrary("Jane Austen", "Pride and Prejudice", 279, false);
+addBookToLibrary("Jane Austen", "Pride and Prejudice", 279, true);
 addBookToLibrary("Game of Thrones", "George R.R. Martin", 694, true);
+addBookToLibrary("The Catcher in the Rye", "J.D. Salinger", 214, false);
 console.log(myLibrary);
 Book.prototype.toggleReadStatus = function () {
   this.read = !this.read;
@@ -46,19 +47,16 @@ function displayBooks() {
     divPages.textContent = `Number of Pages: ${Book.pages}`;
     let divRead = document.createElement("button");
     divRead.className = "read-status-btn";
-    divRead.textContent = Book.read
-      ? "Read status: Read"
-      : "Read status: Not Read";
-    divRead.style.backgroundColor = Book.read ? "#65f123ff" : "#91180bff";
+    if (Book.read) {
+      divRead.textContent = "Read status: Read";
+      divRead.classList.add("read");
+    } else {
+      divRead.textContent = "Read status: Not Read";
+      divRead.classList.add("not-read");
+    }
     divRead.addEventListener("click", function () {
       Book.toggleReadStatus();
-      if (Book.read === true) {
-        divRead.textContent = `Read status: Read`;
-        divRead.style.backgroundColor = "#65f123ff";
-      } else {
-        divRead.textContent = `Read status: Not Read`;
-        divRead.style.backgroundColor = "#91180bff";
-      }
+      displayBooks();
     });
     divCard.appendChild(divTitle);
     divCard.appendChild(divAuthor);
@@ -67,6 +65,7 @@ function displayBooks() {
     let btnRemove = document.createElement("button");
     btnRemove.textContent = "Remove";
     divCard.appendChild(btnRemove);
+    btnRemove.className = "remove-btn";
     btnRemove.setAttribute("data-uuid", Book.uuid);
     btnRemove.addEventListener("click", function (event) {
       const uuid = event.target.getAttribute("data-uuid");
