@@ -1,62 +1,53 @@
-const myLibrary = [];
 
-function Book(author, title, pages, read) {
-  this.author = author;
-  this.title = title;
-  this.pages = pages;
-  this.read = read;
-  this.uuid = crypto.randomUUID();
+class Book {
+  constructor (author, title, pages, read){
+    this.author = author;
+    this.title = title;
+    this.pages = pages;
+    this.read = read;
+    this.uuid = crypto.randomUUID();
+  }
+  toggleReadStatus() {
+    this.read = !this.read;
+  }
 }
 
-function addBookToLibrary(author, title, pages, read) {
-  myLibrary.push(new Book(author, title, pages, read));
-}
+class Library {
+  constructor() {
+    this.books = [];
+  }
 
-addBookToLibrary(
-  "J.K. Rowling",
-  "Harry Potter and the Sorcerer's Stone",
-  309,
-  true
-);
-addBookToLibrary("J.R.R. Tolkien", "The Hobbit", 310, false);
-addBookToLibrary("George Orwell", "1984", 328, false);
-addBookToLibrary("F. Scott Fitzgerald", "The Great Gatsby", 180, true);
-addBookToLibrary("Harper Lee", "To Kill a Mockingbird", 281, true);
-addBookToLibrary("Jane Austen", "Pride and Prejudice", 279, true);
-addBookToLibrary("Game of Thrones", "George R.R. Martin", 694, true);
-addBookToLibrary("The Catcher in the Rye", "J.D. Salinger", 214, false);
-console.log(myLibrary);
-Book.prototype.toggleReadStatus = function () {
-  this.read = !this.read;
-};
+  addBookToLibrary(author, title, pages, read) {
+    this.books.push(new Book(author, title, pages, read));
+  }
 
-function displayBooks() {
+  displayBooks () {
   const divContainer = document.getElementById("book-container");
   divContainer.innerHTML = "";
-  myLibrary.forEach((Book) => {
+  this.books.forEach((book) => {
     let divCard = document.createElement("div");
     divCard.className = "book-card";
     let header = document.createElement("h3");
     header.textContent = "Book Info";
     divCard.appendChild(header);
     let divTitle = document.createElement("div");
-    divTitle.textContent = `Book's name:  ${Book.title}`;
+    divTitle.textContent = `Book's name:  ${book.title}`;
     let divAuthor = document.createElement("div");
-    divAuthor.textContent = `Author: ${Book.author}`;
+    divAuthor.textContent = `Author: ${book.author}`;
     let divPages = document.createElement("div");
-    divPages.textContent = `Number of Pages: ${Book.pages}`;
+    divPages.textContent = `Number of Pages: ${book.pages}`;
     let divRead = document.createElement("button");
     divRead.className = "read-status-btn";
-    if (Book.read) {
+    if (book.read) {
       divRead.textContent = "Read status: Read";
       divRead.classList.add("read");
     } else {
       divRead.textContent = "Read status: Not Read";
       divRead.classList.add("not-read");
     }
-    divRead.addEventListener("click", function () {
-      Book.toggleReadStatus();
-      displayBooks();
+    divRead.addEventListener("click", () => {
+      book.toggleReadStatus();
+      this.displayBooks();
     });
     divCard.appendChild(divTitle);
     divCard.appendChild(divAuthor);
@@ -66,20 +57,32 @@ function displayBooks() {
     btnRemove.textContent = "Remove";
     divCard.appendChild(btnRemove);
     btnRemove.className = "remove-btn";
-    btnRemove.setAttribute("data-uuid", Book.uuid);
-    btnRemove.addEventListener("click", function (event) {
+    btnRemove.setAttribute("data-uuid", book.uuid);
+    btnRemove.addEventListener("click",  (event) => {
       const uuid = event.target.getAttribute("data-uuid");
-      const indexToRemove = myLibrary.findIndex((book) => book.uuid === uuid);
-      myLibrary.splice(indexToRemove, 1);
-      displayBooks();
+      const indexToRemove = this.books.findIndex((book) => book.uuid === uuid);
+      this.books.splice(indexToRemove, 1);
+      this.displayBooks();
     });
 
     divContainer.appendChild(divCard);
   });
 }
+}
 
-displayBooks();
+const myLibrary = new Library();
 
+myLibrary.addBookToLibrary("J.K. Rowling", "Harry Potter and the Sorcerer's Stone", 309, true);
+myLibrary.addBookToLibrary("J.R.R. Tolkien", "The Hobbit", 310, false);
+myLibrary.addBookToLibrary("George Orwell", "1984", 328, false);
+myLibrary.addBookToLibrary("F. Scott Fitzgerald", "The Great Gatsby", 180, true);
+myLibrary.addBookToLibrary("Harper Lee", "To Kill a Mockingbird", 281, true);
+myLibrary.addBookToLibrary("Jane Austen", "Pride and Prejudice", 279, true);
+myLibrary.addBookToLibrary("Game of Thrones", "George R.R. Martin", 694, true);
+myLibrary.addBookToLibrary("The Catcher in the Rye", "J.D. Salinger", 214, false);
+console.log(myLibrary);
+
+myLibrary.displayBooks();
 const updateButton = document.getElementById("showDialogBtn");
 updateButton.addEventListener("click", function () {
   favDialog.showModal();
@@ -100,11 +103,11 @@ form.addEventListener("submit", function (event) {
   const inputTitle = titleElement.value;
   const inputAuthor = authorElement.value;
   const inputPages = pagesElement.value;
-  addBookToLibrary(inputTitle, inputAuthor, inputPages, inputRead);
+  myLibrary.addBookToLibrary(inputTitle, inputAuthor, inputPages, inputRead);
   titleElement.value = "";
   authorElement.value = "";
   pagesElement.value = "";
   readElement.value = "";
-  displayBooks();
+  myLibrary.displayBooks();
   favDialog.close();
 });
